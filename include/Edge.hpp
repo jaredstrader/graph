@@ -13,8 +13,8 @@ class Edge {
   public:
 
   /** \brief Initialize weighted edge pointing from src to dst */
-  inline Edge(int src, 
-              int dst, 
+  inline Edge(int src,
+              int dst,
               double weight) 
   : src_(src),
     dst_(dst),

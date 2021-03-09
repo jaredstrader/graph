@@ -209,15 +209,16 @@ printEdges() {
   }
 }
 
-std::vector< std::vector<int> > Graph::
-getEdges() const {
-  std::vector< std::vector<int> > edges;
-  for(int i=0; i<n_; i++) {
-    for(auto edge : adj_[i]) {
-      std::cout << edge.src_ << " -> " << edge.dst_ << ", " << edge.weight_ << std::endl;
-      std::vector<int> temp = {edge.src_, edge.dst_};
-      edges.push_back(temp);
-    }
-  }
-  return edges;
-};
+// std::vector< std::vector<int> > Graph::
+// getEdges() const {
+//   std::vector< std::vector<int> > edges;
+//   for(int i=0; i<n_; i++) {
+//     std::vector<int> temp;
+//     for(auto edge : adj_[i]) {
+//       std::cout << edge.src_ << " -> " << edge.dst_ << ", " << edge.weight_ << std::endl;
+//       temp.push_back(edge.dst_);
+//     }
+//     edges.push_back(temp);
+//   }
+//   return edges;
+// };

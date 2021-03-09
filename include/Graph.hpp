@@ -27,9 +27,16 @@ class Graph {
       adj_ = new std::list<Edge>[n];
     }
 
-    /** \brief  Delete adjacency list */
-    // inline ~Graph() {
-    // }
+    //////////////////////////////////////////////////////////////////
+    //                          GRAPH
+    //////////////////////////////////////////////////////////////////
+    /** \brief Number of vertices in the graph */
+    int n_;
+
+    /** \brief Adjacency list where adj_[i] is the list of edges incident 
+    to vertex i. */
+    //TODO: replace with smart pointer
+    std::list<Edge> *adj_;
 
     //////////////////////////////////////////////////////////////////
     //                 ADDING AND DELETING EDGES
@@ -85,19 +92,12 @@ class Graph {
     number of vertices*/
     std::vector< std::vector<int> > runFloydWarshall() const;
 
-    /** \brief Print edges. */
+    //////////////////////////////////////////////////////////////////
+    //                          DEBUGGING
+    //////////////////////////////////////////////////////////////////
+
+    /** \brief Print edge list. */
     void printEdges();
-
-    /** \brief Return vector of edges */
-    std::vector< std::vector<int> > getEdges() const;
-
-  protected:
-    /** \brief Number of vertices in the graph */
-    int n_;
-
-    /** \brief Adjacency list where adj_[i] is the list of edges incident 
-    to vertex i */
-    std::list<Edge> *adj_;
 
   private:
     /** \brief Compute index of minimum cost element in queue */
