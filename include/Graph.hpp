@@ -15,6 +15,7 @@
 #include <assert.h>
 #include <list>
 #include <vector>
+#include <algorithm>
 
 class Graph {
   public:
@@ -73,7 +74,11 @@ class Graph {
     algorithm. If negative cycle exists, an empty vector is returned.
 
     The time complexity of this implementation is O(|V|^2) where |V| is 
-    number of vertices. */
+    number of vertices. 
+
+    After running the algorithm, a path from vertex i (source vertex) to 
+    vertex j (arbitrary vertex) can be computed from the output using
+    extractPath(result, j) where result is the output. */
     std::vector<int> runBellmanFord(int src) const;
 
     /** \brief  Computes path from source vertex to all other vertices
@@ -81,7 +86,11 @@ class Graph {
     
     The time complexity of this implementation is O((|V|+|E|)*|V|) where 
     |V| is number of vertices in the graph and |E| is number of edges in the 
-    graph. The complexity is O((|V|+|E|)*log(|V|) if using binary heap */
+    graph. The complexity is O((|V|+|E|)*log(|V|) if using binary heap.
+
+    After running the algorithm, a path from vertex i (source vertex) to 
+    vertex j (arbitrary vertex) can be computed from the output using
+    extractPath(result, j) where result is the output. */
     std::vector<int> runDijkstras(int src) const;
 
     /** \brief  Computes path between all vertices on weighted graph with
@@ -92,9 +101,29 @@ class Graph {
     number of vertices*/
     std::vector< std::vector<int> > runFloydWarshall() const;
 
+    /** \brief Extract path from output of runBellmanFord and runDijkstras 
+    where the output p is a vector of indices such that p[i] is the ith
+    vertex along the path */
+    std::vector<int> extractPath(const std::vector<int> & predecessors, 
+                                       int                dst) const;
+
+    /** \brief Extract path from output of runFloydWarshall where the 
+    output p is a vector of indices such that p[i] is the ith vertex along the
+    path */
+    std::vector<int> extractPath(const std::vector<std::vector<double> > & successors,
+                                       int                                 src, 
+                                       int                                 dst)  const;
+
     //////////////////////////////////////////////////////////////////
     //                          DEBUGGING
     //////////////////////////////////////////////////////////////////
+
+    /** \brief Print output of shortest path algorithms (e.g., 
+    runDijkstras/runBellmanFord */
+    //TODO:
+
+    /** \biref Print output of runFloydWarshall */
+    //TODO:
 
     /** \brief Print edge list. */
     void printEdges();

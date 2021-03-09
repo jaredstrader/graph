@@ -67,13 +67,13 @@ runBellmanFord(int src) const {
   }
 
   //print tree
-  std::cout << "algBellmanFord:" << std::endl;
-  for(int i=0; i<n_; i++) {
-    std::cout << "vertex, predecessor, cost = "
-          << i << ", "
-          << predecessors[i] << ", "
-          << costs[i] << std::endl;
-  }
+  // std::cout << "algBellmanFord:" << std::endl;
+  // for(int i=0; i<n_; i++) {
+  //   std::cout << "vertex, predecessor, cost = "
+  //         << i << ", "
+  //         << predecessors[i] << ", "
+  //         << costs[i] << std::endl;
+  // }
 
   return predecessors;
 }
@@ -116,13 +116,13 @@ runDijkstras(int src) const {
   }
 
   //print tree
-  std::cout << "algDijkstras:" << std::endl;
-  for(int i=0; i<n_; i++) {
-    std::cout << "vertex, predecessor, cost = " 
-              << i << ", " 
-              << predecessors[i] << ", "
-              << costs[i] << std::endl; 
-  }
+  // std::cout << "algDijkstras:" << std::endl;
+  // for(int i=0; i<n_; i++) {
+  //   std::cout << "vertex, predecessor, cost = " 
+  //             << i << ", " 
+  //             << predecessors[i] << ", "
+  //             << costs[i] << std::endl; 
+  // }
 
   return predecessors;
 }
@@ -131,18 +131,18 @@ std::vector<std::vector<int> > Graph::
 runFloydWarshall() const {
   //init matrix of costs and paths
   std::vector< std::vector<double> > costs(n_, std::vector<double>(n_, 1e9));
-  std::vector< std::vector<int> > next(n_, std::vector<int>(n_, -1));
+  std::vector< std::vector<int> > successors(n_, std::vector<int>(n_, -1));
 
   //init cost between adjacenet vertices as edge weights
   for(int i=0; i<n_; i++) {
     for(auto edge : adj_[i]) {
       //for all edges u->v set cost to weight from u->v
       costs[edge.src_][edge.dst_] = edge.weight_;
-      next[edge.src_][edge.dst_] = edge.dst_;
+      successors[edge.src_][edge.dst_] = edge.dst_;
     }
     //for all edges u->u set cost to 0
     costs[i][i] = 0;
-    next[i][i] = i;
+    successors[i][i] = i;
   }
 
   //update costs of paths for all vertices once for each vertex
@@ -152,7 +152,7 @@ runFloydWarshall() const {
         double tmp = costs[i][k] + costs[k][j];
         if(costs[i][j] > tmp) {
           costs[i][j] = tmp;
-          next[i][j] = next[i][k];
+          successors[i][j] = successors[i][k];
         }
       }
     }
@@ -162,7 +162,7 @@ runFloydWarshall() const {
   for(int i=0; i<n_; i++) {
       if(costs[i][i] < 0) {
         std::cout << "Negative cycle exists in graph!" << std::endl;
-        next.clear();
+        successors.clear();
       }
   }
 
@@ -170,16 +170,48 @@ runFloydWarshall() const {
   std::cout << "algFloydWarshall:" << std::endl;
   for(int i=0; i<n_; i++) {
     for(int j=0; j<n_; j++) {
-      std::cout << "vertex i, vertex j, next, cost = "
+      std::cout << "vertex i, vertex j, successors, cost = "
             << i << ", "
             << j << ", "
-            << next[i][j] << ", "
+            << successors[i][j] << ", "
             << costs[i][j] << std::endl;
     }
   }
 
-  return next;
+  return successors;
 }
+
+std::vector<int> Graph::
+extractPath(const std::vector<int> & predecessors, 
+                  int                dst) const {
+  std::vector<int> p;
+  int pred = dst;
+  while(1) {
+    if(pred==-1) {
+      break;
+    }
+    p.push_back(pred);
+    pred = predecessors[pred];
+  }
+  std::reverse(p.begin(), p.end());
+  return p;
+};
+
+std::vector<int> Graph::
+extractPath(const std::vector<std::vector<double> > & successors, 
+                  int                                 src, 
+                  int                                 dst) const {
+  std::vector<int> p;
+  int curr = src;
+  while(1) {
+    if(curr==dst) {
+      break;
+    }
+    p.push_back(curr);
+    curr = successors[curr][dst];
+  }
+  return p;
+};
 
 int Graph::
 minCost(const std::vector<double> & costs, 
